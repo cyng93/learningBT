@@ -18,7 +18,11 @@ typedef struct tNode
    struct tNode* left;
    struct tNode* right;
    struct tNode* parent;
+   int leftOK;
+   int rightOK;
 } TreeNode;
+
+struct tNode *root;
 
 /* Function to traverse binary tree without recursion and
    without stack */
@@ -73,66 +77,18 @@ struct tNode* newtNode(int data)
   tNode->data = data;
   tNode->left = NULL;
   tNode->right = NULL;
+  tNode->leftOK = 0;
+  tNode -> rightOK = 0;
 
   return(tNode);
 }
 
-void inorder(TreeNode *currentNode)
-{
-	while(currentNode){
-		if(currentNode == root && currentNode->leftOK == 1 && currentNode->rightOK == 1){
-			break;
-		}
-		
-		else if(currentNode->data==-1){
-			if(currentNode==currentNode->parent->leftChild)
-				currentNode->parent->leftOK = 1;
-			else
-				currentNode->parent->rightOK = 1;
-			currentNode = currentNode->parent;
-			//if(currentNode->leftOK==0) currentNode->leftOK = 1;
-			//else currentNode->rightOK = 1;
-		}
-
-		/* left-subtree hasn't been visit, traverse to it first */
-		else if(currentNode->leftOK==0 && currentNode->rightOK==0 && currentNode->leftChild!=NULL){ 
-			currentNode = currentNode->leftChild;
-		}
-
-		/* currentNode is the leaf-node, print data! */
-		else if(currentNode->leftChild == NULL && currentNode->righChild==NULL || 
-				currentNode->leftChild->data==-1 && currentNode->rightChild->data==-1){ 
-			cout << currentNode->data << " ";
-			if(currentNode == currentNode->parent->leftChild)
-				currentNode->parent->leftOK = 1;
-			else
-				currentNode->parent->rightOK = 1;
-		}
-
-		/* left-subtree has been traverse, first print out current, then traverse the right-subtree */
-		else if(currentNode->leftOK==1 && currentNode->rightOK==0){ 
-			cout << currentNode->data << " ";
-			currentNode = currentNode->rightChild;
-		}
-
-		/* both left-subtree & right-subtree has been traverse, go back to parentNode */
-		else if(currentNode->leftOK==1 && currentNode->rightOK==1){
-			if(currentNode==currentNode->parent->leftChild)
-				currentNode->parent->leftOK = 1;
-			else
-				currentNode->parent->rightOK = 1;
-			currentNode = currentNode->parent;
-			//if(currentNode->leftOK==0) currentNode->leftOK = 1;
-			//else currentNode->rightOK = 1;
-		}
-	}
-}
 
 /* Driver program to test above functions*/
 int main()
 {
     char input[] = "4 3 11 5 6 12 8 4 -1 9 -1 -1 -1 17 -1 -1";
-    struct tNode *root;
+    //struct tNode *root;
 
 #ifdef myCode
     int i;          // for array purpose
@@ -181,8 +137,8 @@ int main()
 #else
 #endif
 
-  MorrisTraversal(root);
-
+  //MorrisTraversal(root);
+    inorder(root);
   getchar();
   return 0;
 }
