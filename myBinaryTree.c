@@ -77,6 +77,57 @@ struct tNode* newtNode(int data)
   return(tNode);
 }
 
+void inorder(TreeNode *currentNode)
+{
+	while(currentNode){
+		if(currentNode == root && currentNode->leftOK == 1 && currentNode->rightOK == 1){
+			break;
+		}
+		
+		else if(currentNode->data==-1){
+			if(currentNode==currentNode->parent->leftChild)
+				currentNode->parent->leftOK = 1;
+			else
+				currentNode->parent->rightOK = 1;
+			currentNode = currentNode->parent;
+			//if(currentNode->leftOK==0) currentNode->leftOK = 1;
+			//else currentNode->rightOK = 1;
+		}
+
+		/* left-subtree hasn't been visit, traverse to it first */
+		else if(currentNode->leftOK==0 && currentNode->rightOK==0 && currentNode->leftChild!=NULL){ 
+			currentNode = currentNode->leftChild;
+		}
+
+		/* currentNode is the leaf-node, print data! */
+		else if(currentNode->leftChild == NULL && currentNode->righChild==NULL || 
+				currentNode->leftChild->data==-1 && currentNode->rightChild->data==-1){ 
+			cout << currentNode->data << " ";
+			if(currentNode == currentNode->parent->leftChild)
+				currentNode->parent->leftOK = 1;
+			else
+				currentNode->parent->rightOK = 1;
+		}
+
+		/* left-subtree has been traverse, first print out current, then traverse the right-subtree */
+		else if(currentNode->leftOK==1 && currentNode->rightOK==0){ 
+			cout << currentNode->data << " ";
+			currentNode = currentNode->rightChild;
+		}
+
+		/* both left-subtree & right-subtree has been traverse, go back to parentNode */
+		else if(currentNode->leftOK==1 && currentNode->rightOK==1){
+			if(currentNode==currentNode->parent->leftChild)
+				currentNode->parent->leftOK = 1;
+			else
+				currentNode->parent->rightOK = 1;
+			currentNode = currentNode->parent;
+			//if(currentNode->leftOK==0) currentNode->leftOK = 1;
+			//else currentNode->rightOK = 1;
+		}
+	}
+}
+
 /* Driver program to test above functions*/
 int main()
 {
